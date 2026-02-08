@@ -13,6 +13,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css'; // MapLibre's required CSS
 import { MapboxOverlay } from '@deck.gl/mapbox';
 import { PointCloudLayer, LineLayer, ScatterplotLayer } from '@deck.gl/layers';
+import { DataFilterExtension } from '@deck.gl/extensions';
 import { COORDINATE_SYSTEM } from '@deck.gl/core'; // PostProcessEffect
 import type { Layer, ViewSettings, CrossSectionState } from '../types';
 import { colorizePoints } from '../lib/colorize';
@@ -96,8 +97,6 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
     const transform = (map as any).transform;
     if (transform) {
       try {
-        // Attempt to set FOV. This might fail on newer MapLibre versions.
-        // If it fails, we catch it and ignore it to prevent crash.
         transform.fov = settings.fov;
         map.triggerRepaint();
       } catch (e) {
@@ -105,6 +104,37 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
       }
     }
   }, [settings.fov]);
+
+  // ── Effect 6: Handle 3D Terrain ─────────────────────────────────
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    // Wait for style to load before adding sources
+    const enableTerrain = () => {
+      if (settings.showTerrain) {
+        if (!map.getSource('mapbox-dem')) {
+          map.addSource('mapbox-dem', {
+            type: 'raster-dem',
+            url: 'https://demotiles.maplibre.org/terrain-tiles/tiles.json',
+            tileSize: 256
+          });
+        }
+        map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+      } else {
+        if (map.getTerrain()) {
+          map.setTerrain(null);
+        }
+      }
+    };
+
+    if (map.style && map.isStyleLoaded()) {
+      enableTerrain();
+    } else {
+      map.once('style.load', enableTerrain);
+    }
+  }, [settings.showTerrain, darkBasemap]); // Re-run if basemap changes (style reload)
+
 
   // ── Memoized layer builder ──────────────────────────────────────
   const deckLayers = useMemo(() => {
@@ -118,6 +148,12 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
         };
         const colors = colorizePoints(pointCloud, layerSettings);
 
+        // Prepare Filter
+        const extensions = [];
+        if (settings.showElevationFilter) {
+          extensions.push(new DataFilterExtension({ filterSize: 1 }));
+        }
+
         return new PointCloudLayer({
           id: `lidar-${layer.id}-${settings.colorScheme}-${settings.colormap}`,
           data: {
@@ -125,12 +161,22 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
             attributes: {
               getPosition: { value: pointCloud.positions, size: 3 },
               getColor: { value: colors, size: 4 },
+              // For filtering, we need Z values.
+              // Positions array is [dx, dy, z, dx, dy, z...].
+              // We need the 3rd component (index 2).
+              // Float32Array has 4 bytes per element.
+              // Stride = 12 bytes (3 * 4).
+              // Offset = 8 bytes (2 * 4) to reach Z.
+              getFilterValue: { value: pointCloud.positions, size: 1, offset: 8, stride: 12 },
             },
           },
           coordinateSystem: COORDINATE_SYSTEM.LNGLAT_OFFSETS,
           coordinateOrigin: pointCloud.coordinateOrigin,
           pointSize: settings.pointSize,
           opacity: layer.opacity,
+
+          pickable: settings.enablePointPicking, // Point Picking Toggle
+
           modelMatrix: [
             1, 0, 0, 0,
             0, 1, 0, 0,
@@ -141,7 +187,12 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
           getNormal: [0, 0, 1],
           updateTriggers: {
             getColor: [settings.colorScheme, settings.colormap, settings.classificationVisibility],
+            getFilterValue: [settings.showElevationFilter]
           },
+
+          // Extension Props
+          extensions,
+          filterRange: settings.showElevationFilter ? settings.elevationRange : undefined,
         });
       });
 
@@ -194,16 +245,6 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
   }, [layers, settings, crossSection]);
 
   // ── Memoized Effects ────────────────────────────────────────────
-  /*
-  const effects = useMemo(() => {
-    const postProcessEffect = new PostProcessEffect(brightnessContrastShader, {
-        brightness: settings.brightness,
-        contrast: settings.contrast,
-        saturation: settings.saturation
-    });
-    return [postProcessEffect];
-  }, [settings.brightness, settings.contrast, settings.saturation]);
-  */
   const effects: any[] = [];
 
   // ── Effect 4: Update deck.gl overlay ─────────────────────────────
@@ -212,8 +253,54 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
     if (overlay) {
       overlay.setProps({
         layers: deckLayers,
-        effects: effects, // Apply post-processing effects
-        // Click handler for deck.gl to capture map clicks
+        effects: effects,
+
+        // Tooltip for Point Picking
+        getTooltip: ({ object, index, layer }: any) => {
+          if (!settings.enablePointPicking || !object) return null;
+
+          // 'object' in PointCloudLayer (binary mode) might be tricky.
+          // In binary mode, 'index' is the index of the point.
+          // But deck.gl's default tooltip handling might not extract attributes automatically for binary.
+          // However, for PointCloudLayer, if pickable is true, info.object is typically the point info?
+          // Actually, for binary data, 'object' is usually null or the whole data array. 
+          // We rely on 'index' to fetch data.
+
+          // Let's check if layer has attributes
+          const props = layer.props;
+          if (!props.data || !props.data.attributes) return null;
+
+          const positions = props.data.attributes.getPosition.value;
+          const px = positions[index * 3];
+          const py = positions[index * 3 + 1];
+          const pz = positions[index * 3 + 2];
+
+          // Calculate absolute coords
+          const origin = props.coordinateOrigin || [0, 0, 0];
+          const lng = origin[0] + px;
+          const lat = origin[1] + py;
+          const elev = pz; // Z is usually relative to 0 or sea level depending on source, but positions[2] is Z.
+
+          return {
+            html: `
+              <div style="font-family: 'Outfit', sans-serif; font-size: 12px; padding: 4px;">
+                <div><b>Elevation:</b> ${elev.toFixed(2)}m</div>
+                <div><b>Lng:</b> ${lng.toFixed(5)}</div>
+                <div><b>Lat:</b> ${lat.toFixed(5)}</div>
+              </div>
+            `,
+            style: {
+              backgroundColor: '#1e293b',
+              color: 'white',
+              fontSize: '0.8em',
+              borderRadius: '4px',
+              padding: '8px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+            }
+          };
+        },
+
+        // Click handler
         onClick: (info: any) => {
           if (onMapClick && info.coordinate) {
             onMapClick([info.coordinate[0], info.coordinate[1]]);
@@ -221,7 +308,7 @@ export default function MapView({ layers, settings, darkBasemap, crossSection, o
         }
       });
     }
-  }, [deckLayers, effects, onMapClick]);
+  }, [deckLayers, effects, onMapClick, settings.enablePointPicking]);
 
   // ── Effect 5: Fly to data when loaded OR when focused ───────────
   // We combine these because "loaded" is effectively "focused" implicitly.

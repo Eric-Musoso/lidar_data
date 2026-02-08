@@ -137,6 +137,10 @@ export interface ViewSettings {
   brightness: number; // -1 to 1
   contrast: number; // -1 to 1
   saturation: number; // -1 to 1
+  showTerrain: boolean;
+  enablePointPicking: boolean;
+  showElevationFilter: boolean;
+  elevationRange: [number, number]; // [min, max]
 }
 
 // ─── Dataset Definition ──────────────────────────────────────────────

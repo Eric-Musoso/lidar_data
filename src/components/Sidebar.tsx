@@ -269,6 +269,45 @@ export default function Sidebar({
                 <input type="range" min={100_000} max={5_000_000} step={100_000} value={settings.pointBudget}
                   onChange={e => onSettingsChange({ ...settings, pointBudget: Number(e.target.value) })} />
               </div>
+
+              {/* New Toggles */}
+              <div className="control-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+                <label className="checkbox-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem' }}>
+                  <span>3D Terrain</span>
+                  <input type="checkbox" checked={settings.showTerrain} onChange={e => onSettingsChange({ ...settings, showTerrain: e.target.checked })} />
+                </label>
+                <label className="checkbox-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem' }}>
+                  <span>Enable point picking</span>
+                  <input type="checkbox" checked={settings.enablePointPicking} onChange={e => onSettingsChange({ ...settings, enablePointPicking: e.target.checked })} />
+                </label>
+                <label className="checkbox-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem' }}>
+                  <span>Elevation Filter</span>
+                  <input type="checkbox" checked={settings.showElevationFilter} onChange={e => onSettingsChange({ ...settings, showElevationFilter: e.target.checked })} />
+                </label>
+              </div>
+
+              {/* Elevation Filter Slider (Conditional) */}
+              {settings.showElevationFilter && (
+                <div className="control-group">
+                  <label className="control-label">Elevation Range <span>{settings.elevationRange[0]}m - {settings.elevationRange[1]}m</span></label>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <input
+                      type="number"
+                      className="control-input-number"
+                      value={settings.elevationRange[0]}
+                      onChange={e => onSettingsChange({ ...settings, elevationRange: [Number(e.target.value), settings.elevationRange[1]] })}
+                      style={{ width: '45%' }}
+                    />
+                    <input
+                      type="number"
+                      className="control-input-number"
+                      value={settings.elevationRange[1]}
+                      onChange={e => onSettingsChange({ ...settings, elevationRange: [settings.elevationRange[0], Number(e.target.value)] })}
+                      style={{ width: '45%' }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <button className="icon-btn" onClick={() => setShowViz(true)} title="Visualization">

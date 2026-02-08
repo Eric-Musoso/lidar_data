@@ -54,8 +54,6 @@ import './App.css';
 const DATASETS: Dataset[] = [
   { id: 'muenster-center', label: 'Münster Center', url: '/data/3dm_32_404_5758_1_nw.laz' },
   { id: 'muenster-east', label: 'Münster East', url: '/data/3dm_32_405_5758_1_nw.laz' },
-  { id: 'moers', label: 'Moers', url: '/data/3dm_32_356_5644_1_nw.laz' },
-  { id: 'moers-north', label: 'Moers North', url: '/data/3dm_32_356_5645_1_nw.laz' },
 ];
 
 // ─── Default Settings ────────────────────────────────────────────────
@@ -71,6 +69,10 @@ const DEFAULT_SETTINGS: ViewSettings = {
   brightness: 0,
   contrast: 0,
   saturation: 0,
+  showTerrain: false,
+  enablePointPicking: false,
+  showElevationFilter: false,
+  elevationRange: [0, 500],
 };
 
 /**
