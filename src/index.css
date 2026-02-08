@@ -1,0 +1,93 @@
+/**
+ * index.css — Global Styles (CSS Reset + Base Styles)
+ *
+ * This file is imported in main.tsx and applies globally to the whole app.
+ * It sets up a clean baseline so the UI looks consistent across browsers.
+ *
+ * CSS SYNTAX EXPLAINED:
+ * - `:root` targets the <html> element and is where we define CSS custom
+ *   properties (variables) using the --variable-name syntax.
+ * - `*` is the universal selector — it matches every single HTML element.
+ * - `box-sizing: border-box` means padding and border are included in
+ *   an element's width/height (instead of adding to it). This makes
+ *   layout calculations much more intuitive.
+ * - `margin: 0` removes default browser margins from all elements.
+ */
+
+:root {
+  /* 
+   * COLOR PALETTE — "Stunning" Dark Theme
+   * Based on deep blues, slate greys, and vibrant accents.
+   */
+  --bg-primary: #0f172a;
+  /* Deep Slate (Main Background) */
+  --bg-secondary: #1e293b;
+  /* Lighter Slate (Sidebar/Surface) */
+  --bg-surface: #334155;
+  /* Card/Input Background */
+
+  --text-primary: #f8fafc;
+  /* Off-white */
+  --text-secondary: #94a3b8;
+  /* Muted Slate */
+
+  --accent: #3b82f6;
+  /* Vibrant Blue */
+  --accent-hover: #60a5fa;
+  --danger: #ef4444;
+  /* Red for remove/errors */
+
+  /* Spacing & Layout */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #0a0f1e;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

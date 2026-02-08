@@ -1,0 +1,94 @@
+/**
+ * LoadingOverlay.css — Loading Overlay Styles
+ *
+ * CSS CONCEPTS EXPLAINED:
+ *
+ * `position: fixed` — Positions relative to the browser viewport (not any parent).
+ *   Combined with top/left/right/bottom: 0, it covers the entire screen.
+ *   `fixed` elements stay in place even if the page scrolls.
+ *
+ * `z-index: 1000` — Controls stacking order. Higher values appear on top.
+ *   We use 1000 to ensure the overlay appears above the map and all controls.
+ *
+ * `backdrop-filter: blur(8px)` — Applies a blur effect to everything BEHIND
+ *   the element. Combined with a semi-transparent background, creates the
+ *   frosted glass (glassmorphism) effect popular in modern UIs.
+ *
+ * `@keyframes` — Defines a CSS animation sequence. The animation changes
+ *   properties over time between keyframes (from → to, or 0% → 50% → 100%).
+ *   Applied with `animation: name duration timing-function iteration-count`.
+ *
+ * `border-radius: 50%` — Makes a square element into a circle.
+ *   50% of width = 50% of height = perfect circle.
+ *
+ * `border: 4px solid transparent` + `border-top: 4px solid var(--accent)` —
+ *   Creates a circle with only one visible edge (top). When rotated 360°
+ *   by the animation, it looks like a spinning loading indicator.
+ */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(26, 26, 46, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Animated spinner ring */
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid transparent;
+  border-top: 4px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;  /* Rotate 360° every 1 second, forever */
+}
+
+/* @keyframes defines the animation:
+   from (0°) → to (360°) = one full rotation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Progress bar track (background) */
+.loading-progress-bar {
+  width: 240px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;  /* Clips the fill so it doesn't overflow rounded corners */
+}
+
+/* Progress bar fill (foreground) — width is set dynamically via inline style */
+.loading-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;  /* Smooth width animation */
+}
+
+.loading-percent {
+  font-size: 14px;
+  color: var(--text-secondary);
+}

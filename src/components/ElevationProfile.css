@@ -1,0 +1,11 @@
+.elevation-profile {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.elevation-profile canvas {
+    display: block;
+}

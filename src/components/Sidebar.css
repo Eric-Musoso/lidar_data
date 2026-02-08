@@ -1,0 +1,280 @@
+/* Panel Containers */
+.panel-container {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  /* Let clicks pass through around the panel */
+}
+
+/* Ensure interactive elements re-enable pointer events */
+.panel-container>* {
+  pointer-events: auto;
+}
+
+/* Data Panel (Top Right) - Unchanged */
+.panel-data {
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Left Dock (Positioned under standard map controls) */
+.left-dock {
+  position: absolute;
+  top: 140px;
+  /* Below the standard zoom controls (~100px height) */
+  left: 10px;
+  /* Aligned with map controls */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Reduced gap */
+  z-index: 20;
+  pointer-events: none;
+}
+
+.widget-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  /* Enable clicks on buttons */
+}
+
+.widget-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.02em;
+}
+
+/* Panel Content Positioning for Left Dock */
+.left-dock .panel-content {
+  position: absolute;
+  left: 70px;
+  /* Offset from icon button */
+  top: 0;
+  margin: 0;
+  transform-origin: left center;
+  /* Ensure panel doesn't go off-screen vertically if it's tall */
+  max-height: 60vh;
+}
+
+/* Expanded Panel Content */
+.panel-content {
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background-color: rgba(20, 20, 20, 0.85);
+  /* Slightly darker for better contrast */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  font-family: 'Inter', system-ui, sans-serif;
+  animation: fadeIn 0.2s ease-out;
+  margin-bottom: 12px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.panel-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.panel-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Icon Buttons (Floating Triggers) */
+.icon-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #2db3a0;
+  /* Teal accent */
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Bouncy pop */
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  background-color: #259d8c;
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reusing existing inner styles */
+.control-group {
+  margin-bottom: 16px;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.control-select,
+.control-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.85rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.control-select:focus {
+  border-color: #2db3a0;
+}
+
+.control-select option {
+  background: #222;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  margin: 6px 0;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #2db3a0;
+  cursor: pointer;
+  margin-top: -5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.control-button {
+  width: 100%;
+  padding: 8px;
+  background-color: #2db3a0;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.control-button:disabled {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.control-row-flex {
+  display: flex;
+  gap: 8px;
+}
+
+.load-button-small {
+  width: auto;
+  white-space: nowrap;
+}
+
+/* Specific component tweaks */
+.toggle-group {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.toggle-button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  padding: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.toggle-button.active {
+  background: #2db3a0;
+  color: white;
+  font-weight: 600;
+}

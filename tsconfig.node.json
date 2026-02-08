@@ -1,0 +1,26 @@
+{
+  /*
+   * tsconfig.node.json — Node Tooling TypeScript Config
+   *
+   * This config applies to Node.js-side files like vite.config.ts.
+   * These files run in Node, not the browser, so they need different settings.
+   */
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}

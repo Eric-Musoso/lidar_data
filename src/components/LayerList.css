@@ -1,0 +1,109 @@
+.layer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.layer-list-empty {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.layer-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layer-header {
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.layer-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.layer-checkbox {
+    cursor: pointer;
+}
+
+.layer-name {
+    flex: 1;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #eee;
+}
+
+.remove-button {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.remove-button:hover {
+    color: #ff4d4d;
+}
+
+.layer-controls {
+    padding: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.remove-button,
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--text-color-secondary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.remove-button:hover {
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+}
+
+.icon-button:hover {
+    color: var(--primary-color);
+    background: rgba(52, 152, 219, 0.1);
+}
+
+.control-row label {
+    font-size: 0.75rem;
+    color: #aaa;
+    width: 50px;
+}
+
+.control-row input[type='range'] {
+    flex: 1;
+    height: 2px;
+}
+
+.value-display {
+    font-size: 0.75rem;
+    color: #ccc;
+    width: 30px;
+    text-align: right;
+}

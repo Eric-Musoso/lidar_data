@@ -1,0 +1,47 @@
+{
+  /*
+   * tsconfig.app.json — App Source TypeScript Config
+   *
+   * Controls how TypeScript compiles the src/ directory.
+   * Key options explained inline below.
+   */
+  "compilerOptions": {
+    // "composite": true — Required for project references (tsconfig.json)
+    "composite": true,
+
+    // Compile target: ES2020 supports modern JS features
+    // (optional chaining, nullish coalescing, BigInt, etc.)
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+
+    // "lib" — Which built-in type definitions to include
+    // ES2020: modern JS types, DOM: browser APIs (document, window, etc.)
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    // Module system: ESNext for modern import/export
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // Skip type-checking node_modules for faster builds
+    "skipLibCheck": true,
+
+    // Allow importing .tsx files without explicit extensions
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    // Don't emit JS files — Vite handles the actual compilation
+    "noEmit": true,
+
+    // Enable JSX support for React
+    "jsx": "react-jsx",
+
+    // Strict type checking — catches more bugs at compile time
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}

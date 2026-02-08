@@ -1,0 +1,39 @@
+.url-input-form {
+    display: flex;
+    gap: 8px;
+}
+
+.url-input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #eee;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.url-submit-button {
+    background: #333;
+    color: #eee;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 0 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.url-submit-button:hover:not(:disabled) {
+    background: #444;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.url-submit-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

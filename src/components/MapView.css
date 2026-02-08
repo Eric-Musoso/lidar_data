@@ -1,0 +1,22 @@
+/**
+ * MapView.css — Map Container Styles
+ *
+ * CSS EXPLAINED:
+ *
+ * `.map-container` — Class selector. Targets elements with class="map-container".
+ *   In React, we apply this via className="map-container".
+ *
+ * `width: 100%; height: 100%` — Fill the entire parent container.
+ *   The map needs explicit dimensions to render; without them,
+ *   MapLibre GL would have a 0x0 canvas and nothing would be visible.
+ *
+ * `position: relative` — Establishes a positioning context so that
+ *   MapLibre's internal absolutely-positioned elements (controls, popups)
+ *   are positioned relative to this container, not the page.
+ */
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}

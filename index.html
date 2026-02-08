@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!--
+      viewport meta tag — Controls how the page scales on mobile devices.
+      "width=device-width" makes the page width match the device screen width.
+      "initial-scale=1.0" sets the initial zoom to 100%.
+    -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lidar Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!--
+      The root div — React will mount the entire application inside this element.
+      React's createRoot() targets this div and renders the component tree into it.
+    -->
+  <div id="root"></div>
+
+  <!--
+      type="module" — Tells the browser this is an ES module script.
+      Vite uses this to serve individual modules during development (no bundling)
+      and replaces it with an optimized bundle in production.
+    -->
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

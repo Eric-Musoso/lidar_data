@@ -1,0 +1,18 @@
+{
+  /*
+   * tsconfig.json — TypeScript Project References Root
+   *
+   * This is the root TypeScript config that uses "project references"
+   * to organize the codebase into separate compilation units:
+   *   - tsconfig.app.json: The main app source code (src/)
+   *   - tsconfig.node.json: Node.js tooling configs (vite.config.ts)
+   *
+   * "references" tells TypeScript to compile each sub-project independently,
+   * which improves build performance for large projects.
+   */
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
