@@ -2,7 +2,7 @@
 
 A high-performance web-based viewer for visualising large point cloud data (LAZ/LAS/PCD) directly in the browser. Built with [React](https://react.dev/), [deck.gl](https://deck.gl/), and [loaders.gl](https://loaders.gl/).
 
-![Lidar Viewer Screenshot](screenshot.png) *(Add a screenshot here)*
+
 
 ## Features
 
