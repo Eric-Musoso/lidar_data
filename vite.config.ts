@@ -14,6 +14,7 @@ import react from '@vitejs/plugin-react'; // Enables React Fast Refresh (HMR)
 
 // defineConfig() provides autocomplete and type checking for the config object
 export default defineConfig({
+  base: '/lidar_data/',
   plugins: [
     react(), // Adds React support: JSX transform + Fast Refresh
   ],

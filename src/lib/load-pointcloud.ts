@@ -128,9 +128,19 @@ export async function loadPointCloud(
     // Manual fetch to inspect/patch header
     let arrayBuffer: ArrayBuffer;
     if (typeof source === 'string') {
-      const response = await fetch(source);
-      if (!response.ok) throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-      arrayBuffer = await response.arrayBuffer();
+      console.log(`[Loader] Fetching URL: ${source}`);
+      try {
+        const response = await fetch(source);
+        if (!response.ok) {
+          console.error(`[Loader] HTTP Error: ${response.status} ${response.statusText} for ${source}`);
+          throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        }
+        arrayBuffer = await response.arrayBuffer();
+        console.log(`[Loader] Download complete: ${arrayBuffer.byteLength} bytes`);
+      } catch (networkErr) {
+        console.error(`[Loader] Network error fetching ${source}:`, networkErr);
+        throw new Error(`Failed to fetch ${source}. Check network, CORS, or file existence.`);
+      }
     } else {
       arrayBuffer = await source.arrayBuffer();
     }
@@ -213,7 +223,7 @@ export async function loadPointCloud(
   let minZ = Infinity,
     maxZ = -Infinity;
 
-  const CHUNK_SIZE = 50_000; // Process 50K points, then yield to browser
+  const CHUNK_SIZE = 250_000; // Process 250K points, then yield to browser
 
   for (let i = 0; i < pointCount; i++) {
     const srcIdx = i * step; // Index into the original (full) array

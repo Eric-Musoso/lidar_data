@@ -76,9 +76,7 @@ export default function Sidebar({
 }: Props) {
   // Panel states
   const [showData, setShowData] = useState(true);
-  const [showViz, setShowViz] = useState(false);
-  const [showTools, setShowTools] = useState(false);
-  const [showBasemap, setShowBasemap] = useState(false);
+  const [activeWidget, setActiveWidget] = useState<'viz' | 'tools' | 'basemap' | null>(null);
 
   // Check which color schemes have data in the loaded point cloud
   const available = getAvailableSchemes(pointCloud);
@@ -204,11 +202,11 @@ export default function Sidebar({
 
         {/* 1. Visualization Widget */}
         <div className="widget-wrapper">
-          {showViz ? (
+          {activeWidget === 'viz' ? (
             <div className="panel-content">
               <div className="panel-header">
                 <h3 className="panel-title">Visuals</h3>
-                <button className="panel-close-btn" onClick={() => setShowViz(false)}><CloseIcon /></button>
+                <button className="panel-close-btn" onClick={() => setActiveWidget(null)}><CloseIcon /></button>
               </div>
 
               {/* Scheme Select */}
@@ -248,6 +246,10 @@ export default function Sidebar({
                     <option value="gray">Grayscale</option>
                   </select>
                   <div style={{ marginTop: '12px', height: '12px', borderRadius: '4px', background: getGradient(settings.colormap), border: '1px solid rgba(255,255,255,0.2)' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginTop: '4px', color: '#ccc', fontFamily: 'monospace' }}>
+                    <span>Low</span>
+                    <span>High</span>
+                  </div>
                 </div>
               )}
 
@@ -310,7 +312,7 @@ export default function Sidebar({
               )}
             </div>
           ) : (
-            <button className="icon-btn" onClick={() => setShowViz(true)} title="Visualization">
+            <button className="icon-btn" onClick={() => setActiveWidget('viz')} title="Visualization">
               <VizIcon />
             </button>
           )}
@@ -319,11 +321,11 @@ export default function Sidebar({
 
         {/* 2. Tools Widget */}
         <div className="widget-wrapper">
-          {showTools ? (
+          {activeWidget === 'tools' ? (
             <div className="panel-content">
               <div className="panel-header">
                 <h3 className="panel-title">Tools</h3>
-                <button className="panel-close-btn" onClick={() => setShowTools(false)}><CloseIcon /></button>
+                <button className="panel-close-btn" onClick={() => setActiveWidget(null)}><CloseIcon /></button>
               </div>
 
               <div className="control-group">
@@ -348,7 +350,7 @@ export default function Sidebar({
               )}
             </div>
           ) : (
-            <button className="icon-btn" onClick={() => setShowTools(true)} title="Tools">
+            <button className="icon-btn" onClick={() => setActiveWidget('tools')} title="Tools">
               <ToolIcon />
             </button>
           )}
@@ -357,11 +359,11 @@ export default function Sidebar({
 
         {/* 3. Basemap Widget */}
         <div className="widget-wrapper">
-          {showBasemap ? (
+          {activeWidget === 'basemap' ? (
             <div className="panel-content">
               <div className="panel-header">
                 <h3 className="panel-title">Basemap</h3>
-                <button className="panel-close-btn" onClick={() => setShowBasemap(false)}><CloseIcon /></button>
+                <button className="panel-close-btn" onClick={() => setActiveWidget(null)}><CloseIcon /></button>
               </div>
               <div className="control-group">
                 <div className="toggle-group">
@@ -382,7 +384,7 @@ export default function Sidebar({
               </div>
             </div>
           ) : (
-            <button className="icon-btn" onClick={() => setShowBasemap(true)} title="Basemaps">
+            <button className="icon-btn" onClick={() => setActiveWidget('basemap')} title="Basemaps">
               <BasemapIcon />
             </button>
           )}

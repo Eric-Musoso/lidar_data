@@ -52,8 +52,9 @@ import './App.css';
 // We use a predefined list of datasets for now. In a real app,
 // this could be fetched from an API.
 const DATASETS: Dataset[] = [
-  { id: 'muenster-center', label: 'Münster Center', url: '/data/3dm_32_404_5758_1_nw.laz' },
-  { id: 'muenster-east', label: 'Münster East', url: '/data/3dm_32_405_5758_1_nw.laz' },
+  { id: 'muenster-center', label: 'Münster Center', url: `${import.meta.env.BASE_URL}data/3dm_32_404_5758_1_nw.laz` },
+  { id: 'muenster-east', label: 'Münster East', url: `${import.meta.env.BASE_URL}data/3dm_32_405_5758_1_nw.laz` },
+  { id: 'test-indoor', label: 'Test: Small Indoor Scan', url: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/point-cloud-laz/indoor.0.1.laz' },
 ];
 
 // ─── Default Settings ────────────────────────────────────────────────
