@@ -25,5 +25,4 @@ export const DEFAULT_SETTINGS: ViewSettings = {
 export const DATASETS: Dataset[] = [
     { id: 'muenster-center', label: 'Münster Center', url: `${import.meta.env.BASE_URL}data/3dm_32_404_5758_1_nw.laz` },
     { id: 'muenster-east', label: 'Münster East', url: `${import.meta.env.BASE_URL}data/3dm_32_405_5758_1_nw.laz` },
-    { id: 'test-indoor', label: 'Test: Small Indoor Scan', url: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/point-cloud-laz/indoor.0.1.laz' },
 ];
