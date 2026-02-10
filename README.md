@@ -2,7 +2,7 @@
 
 A high-performance web-based viewer for visualising large point cloud data (LAZ/LAS/PCD) directly in the browser. Built with [React](https://react.dev/), [deck.gl](https://deck.gl/), and [loaders.gl](https://loaders.gl/).
 
-
+![image](https://github.com/user-attachments/assets/a42d0918-92cc-4ad3-af6f-6820d416e865)
 
 ## Features
 
